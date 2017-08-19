@@ -3,6 +3,9 @@ package de.skillkiller.backupsystem.core;
 import de.skillkiller.backupsystem.commands.Ping;
 import de.skillkiller.backupsystem.listener.GuildMessageListener;
 import de.skillkiller.backupsystem.listener.UserOnlineStatusUpdateListener;
+import de.skillkiller.backupsystem.target.Channelbot;
+import de.skillkiller.backupsystem.target.Knecht;
+import de.skillkiller.backupsystem.target.Skillkiller;
 import de.skillkiller.backupsystem.target.zekroBot;
 import de.skillkiller.backupsystem.util.Settings;
 import net.dv8tion.jda.core.AccountType;
@@ -56,5 +59,8 @@ public class Main {
 
     private static void registerTargets() {
         UserOnlineStatusUpdateListener.targetHashMap.put("272336949841362944", new zekroBot());
+        UserOnlineStatusUpdateListener.targetHashMap.put("323587299617275904", new Knecht());
+        UserOnlineStatusUpdateListener.targetHashMap.put("98719514908188672", new Skillkiller());
+        UserOnlineStatusUpdateListener.targetHashMap.put("328643704619401217", new Channelbot());
     }
 }
