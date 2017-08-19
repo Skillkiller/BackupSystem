@@ -23,6 +23,6 @@ public class Channelbot implements Target {
 
     @Override
     public Process startProcess() throws IOException {
-        return Runtime.getRuntime().exec("su channelbot -c \"cd /home/channelbot/ && ./start.sh\"");
+        return Runtime.getRuntime().exec("./start.sh\"");
     }
 }

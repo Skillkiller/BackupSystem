@@ -1,6 +1,7 @@
 package de.skillkiller.backupsystem.core;
 
 import de.skillkiller.backupsystem.commands.Ping;
+import de.skillkiller.backupsystem.commands.run;
 import de.skillkiller.backupsystem.listener.GuildMessageListener;
 import de.skillkiller.backupsystem.listener.UserOnlineStatusUpdateListener;
 import de.skillkiller.backupsystem.target.Channelbot;
@@ -55,6 +56,7 @@ public class Main {
 
     private static void registerCommands() {
         CommandParser.register("ping", new Ping());
+        CommandParser.register("run", new run());
     }
 
     private static void registerTargets() {

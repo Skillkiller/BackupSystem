@@ -68,11 +68,11 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
             java.util.Scanner s = null;
             try {
                 s = new java.util.Scanner(target.startProcess().getInputStream()).useDelimiter("\\A");
-                String outout = "Server meldet: " + s.next();
+                String outout = s.next();
                 if(outout.length() > 2000) {
-                    outout = outout.substring(0, 2000);
+                    outout = outout.substring(0, 1500);
                 }
-                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), outout);
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "**Server meldet**:", outout);
 
             } catch (IOException e) {
                 e.printStackTrace();
