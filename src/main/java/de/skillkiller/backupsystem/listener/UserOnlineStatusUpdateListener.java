@@ -1,13 +1,15 @@
 package de.skillkiller.backupsystem.listener;
 
-import de.skillkiller.backupsystem.util.Message;
+import de.skillkiller.backupsystem.target.Target;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.user.UserOnlineStatusUpdateEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,51 +17,40 @@ import java.util.List;
  */
 public class UserOnlineStatusUpdateListener extends ListenerAdapter implements Runnable{
 
-    static UserOnlineStatusUpdateEvent pevent = null;
-    static String commandChannel = "308153679716941825";
-    static String informChannel = "324538494729060355";
+    public static HashMap<String, Target> targetHashMap = new HashMap<>();
+    private UserOnlineStatusUpdateEvent event;
+    private User user;
+    private Target target;
 
     @Override
     public void onUserOnlineStatusUpdate(UserOnlineStatusUpdateEvent event) {
-
-        pevent = event;
-
-        ArrayList<String> target = new ArrayList<>();
-        target.add("98719514908188672");
-        target.add("272336949841362944");
-        target.add("323587299617275904");
-
-        User user = event.getUser();
-        if (target.contains(user.getId())) {
+        this.event = event;
+        user = event.getUser();
+        if (targetHashMap.containsKey(user.getId())) {
             if (user.getMutualGuilds().get(0).getMember(user).getOnlineStatus() == OnlineStatus.OFFLINE) {
-                Message.sendInfo(event.getJDA().getTextChannelById(informChannel), "Target offline", "Der User " + user.getName() + " ging gerade offline...");
-                //Tests werden ausgeführt
-                new Thread(new UserOnlineStatusUpdateListener()).start();
-
+                target = targetHashMap.get(user.getId());
+                new Thread(this).start();
             }
-
         }
-
-
     }
 
     @Override
     public void run() {
-        net.dv8tion.jda.core.entities.Message message = pevent.getJDA().getTextChannelById(commandChannel).sendMessage("-ping").complete();
+        Message message = event.getJDA().getTextChannelById(target.getCommandChannel()).sendMessage(target.getCommand()).complete();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        List<net.dv8tion.jda.core.entities.Message> history = new MessageHistory(pevent.getJDA().getTextChannelById(commandChannel)).retrievePast(10).complete();
+        List<Message> history = new MessageHistory(event.getJDA().getTextChannelById(target.getCommandChannel())).retrievePast(10).complete();
 
         boolean found, search;
         search = true;
         found = false;
         int i = 0;
         while (search && i <= history.size() && !found) {
-            if (history.get(0).getAuthor().getId().equals("272336949841362944")) {
+            if (history.get(0).getAuthor().getId().equals(user.getId())) {
                 found = true;
             }
             if (history.get(0).getId().equals(message.getId())) {
@@ -69,10 +60,18 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
         }
 
         if(found) {
-            Message.sendInfo(pevent.getJDA().getTextChannelById(informChannel), "Master Bot noch online !");
+            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ist noch Online");
+            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Aber der Online Status hat sich verändert... Bitte im Blick behalten @here");
         } else {
-            Message.sendInfo(pevent.getJDA().getTextChannelById(informChannel), "Master Bot offline :x:");
-        }
+            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ging gerade Offline!");
 
+            java.util.Scanner s = null;
+            try {
+                s = new java.util.Scanner(target.startProcess().getInputStream()).useDelimiter("\\A");
+                System.out.println(s.next());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
