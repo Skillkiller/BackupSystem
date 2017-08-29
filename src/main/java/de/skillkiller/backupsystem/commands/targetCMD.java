@@ -44,7 +44,7 @@ public class targetCMD implements Command {
 
     @Override
     public String getHelp() {
-        return null;
+        return ".target [TargetID]";
     }
 
     @Override
