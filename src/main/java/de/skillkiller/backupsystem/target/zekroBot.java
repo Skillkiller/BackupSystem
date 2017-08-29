@@ -28,8 +28,8 @@ public class zekroBot implements Target {
     }
 
     @Override
-    public Process startProcess() throws IOException {
-        return Runtime.getRuntime().exec("cmd.exe /c help");
+    public String startProcessCMD() throws IOException {
+        return "";
     }
 
 

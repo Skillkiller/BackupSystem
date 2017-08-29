@@ -68,7 +68,7 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
 
             java.util.Scanner s = null;
             try {
-                s = new java.util.Scanner(target.startProcess().getInputStream()).useDelimiter("\\A");
+                s = new java.util.Scanner(Runtime.getRuntime().exec(target.startProcessCMD()).getInputStream()).useDelimiter("\\A");
                 String outout = s.next();
                 if(outout.length() > 2000) {
                     outout = outout.substring(0, 1500);

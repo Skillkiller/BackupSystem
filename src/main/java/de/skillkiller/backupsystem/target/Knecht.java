@@ -22,7 +22,7 @@ public class Knecht implements Target {
     }
 
     @Override
-    public Process startProcess() throws IOException {
-        return Runtime.getRuntime().exec("");
+    public String startProcessCMD() throws IOException {
+        return "";
     }
 }

@@ -10,7 +10,7 @@ public interface Target{
     String getInformChannel();
     String getCommandChannel();
     String getCommand();
-    Process startProcess() throws IOException;
+    String startProcessCMD() throws IOException;
 
 
 }
