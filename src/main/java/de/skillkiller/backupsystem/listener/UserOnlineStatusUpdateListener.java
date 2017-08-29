@@ -63,6 +63,7 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
             de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ist noch Online");
             de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Aber der Online Status hat sich verändert... Bitte im Blick behalten @here");
         } else {
+            de.skillkiller.backupsystem.util.Message.sendError(event.getJDA().getTextChannelById(target.getCommandChannel()), "Keine Antwort innerhalb des Zeitintervalls erhalten!");
             de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ging gerade Offline!");
 
             java.util.Scanner s = null;
