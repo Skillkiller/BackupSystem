@@ -2,8 +2,6 @@ package de.skillkiller.backupsystem.target;
 
 import net.dv8tion.jda.core.events.user.UserOnlineStatusUpdateEvent;
 
-import java.io.IOException;
-
 /**
  * Created by Skillkiller on 18.08.2017.
  */
@@ -28,7 +26,7 @@ public class zekroBot implements Target {
     }
 
     @Override
-    public String startProcessCMD() throws IOException {
+    public String startProcessCMD() {
         return "";
     }
 

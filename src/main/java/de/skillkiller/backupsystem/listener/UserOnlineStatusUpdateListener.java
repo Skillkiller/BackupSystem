@@ -1,6 +1,7 @@
 package de.skillkiller.backupsystem.listener;
 
 import de.skillkiller.backupsystem.target.Target;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -67,13 +68,20 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
             de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ging gerade Offline!");
 
             java.util.Scanner s = null;
+            if(target.startProcessCMD().equals("")) {
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Kein Startbefehl angegeben!");
+                return;
+            }
             try {
                 s = new java.util.Scanner(Runtime.getRuntime().exec(target.startProcessCMD()).getInputStream()).useDelimiter("\\A");
                 String outout = s.next();
                 if(outout.length() > 2000) {
                     outout = outout.substring(0, 1500);
                 }
-                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "**Server meldet**:", outout);
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.addField("Befehl wird ausgeführt:", "```" + target.startProcessCMD() + "```", false);
+                embedBuilder.addField("**Konsole**:", "```" + outout + "```", false);
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), embedBuilder);
 
             } catch (IOException e) {
                 e.printStackTrace();

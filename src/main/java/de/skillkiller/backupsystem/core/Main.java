@@ -5,8 +5,11 @@ import de.skillkiller.backupsystem.commands.run;
 import de.skillkiller.backupsystem.commands.stop;
 import de.skillkiller.backupsystem.commands.targetCMD;
 import de.skillkiller.backupsystem.listener.GuildMessageListener;
+import de.skillkiller.backupsystem.listener.Ready;
 import de.skillkiller.backupsystem.listener.UserOnlineStatusUpdateListener;
 import de.skillkiller.backupsystem.target.Channelbot;
+import de.skillkiller.backupsystem.target.Knecht;
+import de.skillkiller.backupsystem.target.zekroBot;
 import de.skillkiller.backupsystem.util.Settings;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
@@ -51,6 +54,7 @@ public class Main {
     private static void registerListeners() {
         builder.addEventListener(new GuildMessageListener());
         builder.addEventListener(new UserOnlineStatusUpdateListener());
+        builder.addEventListener(new Ready());
     }
 
     private static void registerCommands() {
@@ -61,8 +65,8 @@ public class Main {
     }
 
     private static void registerTargets() {
-        //UserOnlineStatusUpdateListener.targetHashMap.put("272336949841362944", new zekroBot());
-        //UserOnlineStatusUpdateListener.targetHashMap.put("323587299617275904", new Knecht());
+        UserOnlineStatusUpdateListener.targetHashMap.put("272336949841362944", new zekroBot());
+        UserOnlineStatusUpdateListener.targetHashMap.put("323587299617275904", new Knecht());
         UserOnlineStatusUpdateListener.targetHashMap.put("328643704619401217", new Channelbot());
     }
 }

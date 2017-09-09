@@ -1,7 +1,5 @@
 package de.skillkiller.backupsystem.target;
 
-import java.io.IOException;
-
 /**
  * Created by Skillkiller on 19.08.2017.
  */
@@ -22,7 +20,7 @@ public class Channelbot implements Target {
     }
 
     @Override
-    public String startProcessCMD() throws IOException {
+    public String startProcessCMD() {
         return "./start.sh";
     }
 }
