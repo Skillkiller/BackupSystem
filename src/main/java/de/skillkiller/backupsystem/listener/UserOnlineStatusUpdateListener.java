@@ -60,32 +60,45 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
             i++;
         }
 
-        if(found) {
-            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ist noch Online");
-            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Aber der Online Status hat sich verändert... Bitte im Blick behalten @here");
-        } else {
-            de.skillkiller.backupsystem.util.Message.sendError(event.getJDA().getTextChannelById(target.getCommandChannel()), "Keine Antwort innerhalb des Zeitintervalls erhalten!");
-            de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ging gerade Offline!");
-
-            java.util.Scanner s = null;
-            if(target.startProcessCMD().equals("")) {
-                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Kein Startbefehl angegeben!");
-                return;
-            }
-            try {
-                s = new java.util.Scanner(Runtime.getRuntime().exec(target.startProcessCMD()).getInputStream()).useDelimiter("\\A");
-                String outout = s.next();
-                if(outout.length() > 2000) {
-                    outout = outout.substring(0, 1500);
-                }
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.addField("Befehl wird ausgeführt:", "```" + target.startProcessCMD() + "```", false);
-                embedBuilder.addField("**Konsole**:", "```" + outout + "```", false);
-                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), embedBuilder);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        if (user.getMutualGuilds().get(0).getMember(user).getOnlineStatus() == OnlineStatus.OFFLINE){
+            // Wenn der Bot noch immer Offline ist
+            if(found) {
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ist noch Online");
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Aber der Online Status hat sich verändert... Bitte im Blick behalten @here");
+            } else {
+                de.skillkiller.backupsystem.util.Message.sendError(event.getJDA().getTextChannelById(target.getCommandChannel()), "Keine Antwort innerhalb des Zeitintervalls erhalten!");
+                de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), user.getAsMention() + " ging gerade Offline!");
+
+                java.util.Scanner s = null;
+                if(target.startProcessCMD().equals("")) {
+                    de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), "Kein Startbefehl angegeben!");
+                    return;
+                }
+                try {
+                    s = new java.util.Scanner(Runtime.getRuntime().exec(target.startProcessCMD()).getInputStream()).useDelimiter("\\A");
+                    String outout = s.next();
+                    if(outout.length() > 2000) {
+                        outout = outout.substring(0, 1500);
+                    }
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.addField("Befehl wird ausgeführt:", "```" + target.startProcessCMD() + "```", false);
+                    embedBuilder.addField("**Konsole**:", "```" + outout + "```", false);
+                    de.skillkiller.backupsystem.util.Message.sendInfo(event.getJDA().getTextChannelById(target.getInformChannel()), embedBuilder);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            //Bot ist wieder da
+            
+        }
+
     }
 }
