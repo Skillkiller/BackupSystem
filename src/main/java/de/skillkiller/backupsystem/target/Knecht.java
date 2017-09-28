@@ -11,7 +11,7 @@ public class Knecht implements Target {
 
     @Override
     public String getCommandChannel() {
-        return "308153679716941825";
+        return "358364792614027265";
     }
 
     @Override
