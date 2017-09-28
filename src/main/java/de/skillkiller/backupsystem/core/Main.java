@@ -11,6 +11,7 @@ import de.skillkiller.backupsystem.target.Channelbot;
 import de.skillkiller.backupsystem.target.Knecht;
 import de.skillkiller.backupsystem.target.zekroBot;
 import de.skillkiller.backupsystem.util.Settings;
+import de.skillkiller.backupsystem.util.Static;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
@@ -36,7 +37,7 @@ public class Main {
         try {
             builder.setToken(settings.getSet("token", "Token angeben!"))
                     .setAutoReconnect(true)
-                    .setGame(Game.of("Testing System"))
+                    .setGame(Game.of("Watching Targets | " + Static.version))
                     .setStatus(OnlineStatus.DO_NOT_DISTURB);
             builder.buildBlocking();
         } catch (IOException e) {

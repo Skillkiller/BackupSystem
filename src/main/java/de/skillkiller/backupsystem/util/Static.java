@@ -6,5 +6,6 @@ package de.skillkiller.backupsystem.util;
 public class Static {
 
     public static String PREFIX = ".";
+    public final static String version = "1.1";
 
 }
