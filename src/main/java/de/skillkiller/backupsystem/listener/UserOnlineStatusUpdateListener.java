@@ -1,5 +1,6 @@
 package de.skillkiller.backupsystem.listener;
 
+import de.skillkiller.backupsystem.core.Main;
 import de.skillkiller.backupsystem.target.Target;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
@@ -28,6 +29,7 @@ public class UserOnlineStatusUpdateListener extends ListenerAdapter implements R
         this.event = event;
         user = event.getUser();
         if (targetHashMap.containsKey(user.getId())) {
+            Main.setStatus(event.getJDA());
             if (user.getMutualGuilds().get(0).getMember(user).getOnlineStatus() == OnlineStatus.OFFLINE) {
                 target = targetHashMap.get(user.getId());
                 new Thread(this).start();

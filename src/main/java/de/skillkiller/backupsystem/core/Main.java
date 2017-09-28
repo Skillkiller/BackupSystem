@@ -13,13 +13,16 @@ import de.skillkiller.backupsystem.target.zekroBot;
 import de.skillkiller.backupsystem.util.Settings;
 import de.skillkiller.backupsystem.util.Static;
 import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Skillkiller on 17.08.2017.
@@ -38,8 +41,9 @@ public class Main {
             builder.setToken(settings.getSet("token", "Token angeben!"))
                     .setAutoReconnect(true)
                     .setGame(Game.of("Watching Targets | " + Static.version))
-                    .setStatus(OnlineStatus.DO_NOT_DISTURB);
-            builder.buildBlocking();
+                    .setStatus(OnlineStatus.IDLE);
+            JDA jda = builder.buildBlocking();
+            setStatus(jda);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -69,5 +73,27 @@ public class Main {
         UserOnlineStatusUpdateListener.targetHashMap.put("272336949841362944", new zekroBot());
         UserOnlineStatusUpdateListener.targetHashMap.put("323587299617275904", new Knecht());
         UserOnlineStatusUpdateListener.targetHashMap.put("328643704619401217", new Channelbot());
+    }
+
+
+    public static void setStatus(JDA jda) {
+        boolean allRight = true;
+        int offline = 0;
+
+        for (Map.Entry map: UserOnlineStatusUpdateListener.targetHashMap.entrySet() ) {
+            User user = jda.getUserById(map.getKey().toString());
+            if( user.getMutualGuilds().get(0).getMember(user).getOnlineStatus() == OnlineStatus.OFFLINE) {
+                allRight = false;
+                offline++;
+            }
+        }
+
+        if(allRight) {
+            jda.getPresence().setStatus(OnlineStatus.IDLE);
+            jda.getPresence().setGame(Game.of("Watching Targets | " + Static.version));
+        } else {
+            jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+            jda.getPresence().setGame(Game.of("Exception: " + offline + (offline > 1 ? " Bots " : " Bot ") + " offline | " + Static.version));
+        }
     }
 }
