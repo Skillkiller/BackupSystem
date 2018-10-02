@@ -39,7 +39,6 @@ public class Main {
         registerTargets();
         try {
             builder.setToken(settings.getSet("token", "Token angeben!"))
-                    .setAutoReconnect(true)
                     .setGame(Game.of("Watching Targets | " + Static.version))
                     .setStatus(OnlineStatus.IDLE);
             JDA jda = builder.buildBlocking();
