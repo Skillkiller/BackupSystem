@@ -48,7 +48,6 @@ public class Settings {
 
     public String getSet(String key, String defaultValue) throws IOException {
         if(get(key) == null) {
-            System.out.println("Schreibe Default");
             set(key, defaultValue);
             saveFile();
             return null;
